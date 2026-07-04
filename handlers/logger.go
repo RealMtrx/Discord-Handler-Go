@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/RealMtrx/Discord-Handler-Go/config"
 	"github.com/fatih/color"
 )
 
@@ -19,7 +20,7 @@ type StartupData struct {
 func StartupReport(data StartupData) {
 	fmt.Println()
 	color.Cyan("╔══════════════════════════════════╗")
-	color.Cyan("║     Discord Handler - Go         ║")
+	color.Cyan(fmt.Sprintf("║     %-30s║", config.App.BotName))
 	color.Cyan("╚══════════════════════════════════╝")
 	fmt.Println()
 
@@ -44,5 +45,5 @@ func StartupReport(data StartupData) {
 	}
 
 	fmt.Println()
-	color.Magenta("[ %s ] Bot is now online and fully operational.", time.Now().Format("02/01/2006 15:04:05"))
+	color.Magenta("[ %s ] %s is now online and fully operational.", time.Now().Format("02/01/2006 15:04:05"), data.Name)
 }

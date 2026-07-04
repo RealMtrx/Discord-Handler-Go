@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -19,13 +20,13 @@ func main() {
 	handlers.SetupAntiCrash()
 	defer handlers.RecoverPanic()
 
-	color.Cyan("╔══════════════════════════════════╗")
-	color.Cyan("║     Starting Discord Handler     ║")
-	color.Cyan("╚══════════════════════════════════╝")
-	println()
-
 	cfg := config.Load()
 	config.App = cfg
+
+	color.Cyan("╔══════════════════════════════════╗")
+	color.Cyan(fmt.Sprintf("║     Starting %-20s║", cfg.BotName))
+	color.Cyan("╚══════════════════════════════════╝")
+	println()
 
 	b := bot.New(cfg)
 

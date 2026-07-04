@@ -37,5 +37,14 @@ func MessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
+	guildName := "Direct Message"
+	guild, err := s.Guild(m.GuildID)
+	if err == nil {
+		guildName = guild.Name
+	}
+
+	avatarURL := m.Author.AvatarURL("256")
+	core.SendPrefixCommandUsage(m.Author.ID, m.Author.Username, cmdName, guildName, avatarURL)
+
 	go cmd.Handler(s, m, args[1:])
 }

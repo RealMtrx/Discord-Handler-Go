@@ -6,16 +6,18 @@ import (
 	"fmt"
 	"net/http"
 	"time"
+
+	"github.com/RealMtrx/Discord-Handler-Go/config"
 )
 
 type WebhookEmbed struct {
-	Title       string              `json:"title"`
-	Description string              `json:"description"`
-	Color       int                 `json:"color"`
-	Fields      []WebhookField      `json:"fields"`
-	Footer      WebhookFooter       `json:"footer"`
-	Timestamp   string              `json:"timestamp"`
-	Thumbnail   *WebhookThumbnail   `json:"thumbnail,omitempty"`
+	Title       string             `json:"title"`
+	Description string             `json:"description"`
+	Color       int                `json:"color"`
+	Fields      []WebhookField     `json:"fields"`
+	Footer      WebhookFooter      `json:"footer"`
+	Timestamp   string             `json:"timestamp"`
+	Thumbnail   *WebhookThumbnail  `json:"thumbnail,omitempty"`
 }
 
 type WebhookField struct {
@@ -64,4 +66,12 @@ func SendWebhook(url string, embed WebhookEmbed) error {
 		return fmt.Errorf("webhook returned status %d", resp.StatusCode)
 	}
 	return nil
+}
+
+func makeTimestamp() string {
+	return time.Now().Format(time.RFC3339)
+}
+
+func footerText(suffix string) string {
+	return config.App.BotName + " • " + suffix
 }

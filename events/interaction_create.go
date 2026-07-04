@@ -19,16 +19,16 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		return
 	}
 
-	userID := ""
+	var user *discordgo.User
 	if i.Member != nil && i.Member.User != nil {
-		userID = i.Member.User.ID
+		user = i.Member.User
 	} else if i.User != nil {
-		userID = i.User.ID
+		user = i.User
 	} else {
 		return
 	}
 
-	onCooldown, remaining := core.Cooldowns.Check(userID, data.Name, 3000)
+	onCooldown, remaining := core.Cooldowns.Check(user.ID, data.Name, 3000)
 	if onCooldown {
 		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
@@ -39,6 +39,17 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		})
 		return
 	}
+
+	guildName := "Direct Message"
+	if i.GuildID != "" {
+		guild, err := s.Guild(i.GuildID)
+		if err == nil {
+			guildName = guild.Name
+		}
+	}
+
+	avatarURL := user.AvatarURL("256")
+	core.SendSlashCommandUsage(user.ID, user.Username, data.Name, guildName, avatarURL)
 
 	cmd.Handler(s, i)
 }

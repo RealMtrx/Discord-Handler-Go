@@ -1,0 +1,48 @@
+package config
+
+import (
+	"os"
+	"strings"
+)
+
+type Config struct {
+	Token                string
+	ClientID             string
+	BotName              string
+	Prefix               string
+	OwnerIDs             []string
+	MongoDBURI           string
+	ErrorWebhook         string
+	SlashCommandWebhook  string
+	PrefixCommandWebhook string
+	JoinGuildWebhook     string
+	LeaveGuildWebhook    string
+	ReadyWebhook         string
+}
+
+var App *Config
+
+func Load() *Config {
+	App = &Config{
+		Token:                getEnv("TOKEN", "#"),
+		ClientID:             getEnv("CLIENT_ID", "#"),
+		BotName:              getEnv("BOT_NAME", "Discord Handler"),
+		Prefix:               "$",
+		OwnerIDs:             strings.Split(getEnv("OWNER_IDS", "#,#"), ","),
+		MongoDBURI:           getEnv("MONGODB_URI", "#"),
+		ErrorWebhook:         getEnv("ERROR_WEBHOOK", "#"),
+		SlashCommandWebhook:  getEnv("SLASH_WEBHOOK", "#"),
+		PrefixCommandWebhook: getEnv("PREFIX_WEBHOOK", "#"),
+		JoinGuildWebhook:     getEnv("JOIN_WEBHOOK", "#"),
+		LeaveGuildWebhook:    getEnv("LEAVE_WEBHOOK", "#"),
+		ReadyWebhook:         getEnv("READY_WEBHOOK", "#"),
+	}
+	return App
+}
+
+func getEnv(key, fallback string) string {
+	if val := os.Getenv(key); val != "" {
+		return val
+	}
+	return fallback
+}

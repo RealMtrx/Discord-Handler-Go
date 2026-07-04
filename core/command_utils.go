@@ -1,0 +1,28 @@
+package core
+
+import (
+	"fmt"
+	"time"
+)
+
+type ErrorReport struct {
+	Message     string `json:"message"`
+	CommandName string `json:"commandName"`
+	Timestamp   string `json:"timestamp"`
+}
+
+func FormatError(err error, commandName string) *ErrorReport {
+	if err == nil {
+		return nil
+	}
+
+	return &ErrorReport{
+		Message:     err.Error(),
+		CommandName: commandName,
+		Timestamp:   time.Now().Format(time.RFC3339),
+	}
+}
+
+func LogCommandUsage(userID, userName, commandName, guildName string) {
+	fmt.Printf("[Command] %s (%s) used %s in %s\n", userName, userID, commandName, guildName)
+}
