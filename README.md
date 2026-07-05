@@ -138,4 +138,4 @@ var Ping = &Command{
 
 ---
 
-**Discord Handler** - A modern, scalable Discord bot framework built with Go.
+**Discord Handler** — Built by **Mtrx** — Discord: **0hu2**
